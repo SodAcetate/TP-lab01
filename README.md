@@ -320,17 +320,20 @@ $ find -name "any.hpp"
 $ grep -lr "boost::asio"
 ```
 8. Скомпилирутйе *boost*. Можно воспользоваться [инструкцией](https://www.boost.org/doc/libs/1_61_0/more/getting_started/unix-variants.html#or-build-custom-binaries) или [ссылкой](https://codeyarns.com/2017/01/24/how-to-build-boost-on-linux/).
+
+> **Внимание!** Это будет долго.
+
 ```sh
 $ ./bootstrap.sh
-$ ./b2 install
+$ sudo ./b2 install
 ```
 9. Перенесите все скомпилированные на предыдущем шаге статические библиотеки в директорию `~/boost-libs`.
 
-> Обратите внимание, что первый аргумент команды `cp` содержит паттерн. Команда применится ко всем файлам, удовлетворяющим паттерну.
+> Обратите внимание, что первым аргументом команде `cp` подаётся результат команды `find -name "*.a"`. Команда выполнится для всех найденных файлов с расширением `.a`.
 
 ```sh
 $ mkdir ~/boost-libs
-$ cp stage/lib/*.a ~/boost-libs
+$ cp `find -name "*.a"` ~/boost-libs
 ```
 10. Подсчитайте сколько занимает дискового пространства каждый файл в этой директории.
 
@@ -360,16 +363,6 @@ $ find ! -type d -exec du -h {} +
 
 ```sh
 $ find ! -type d -exec du {} + | sort -rn | head -n 10
-4728	./libboost_wave.a
-4512	./libboost_log.a
-3148	./libboost_math_tr1.a
-3116	./libboost_math_tr1l.a
-3080	./libboost_math_tr1f.a
-2832	./libboost_regex.a
-2752	./libboost_log_setup.a
-2412	./libboost_test_exec_monitor.a
-2392	./libboost_unit_test_framework.a
-2096	./libboost_locale.a
 ```
 
 ```
